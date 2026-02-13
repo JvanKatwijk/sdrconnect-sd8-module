@@ -107,7 +107,7 @@ will result in
  * sending each received message to the pskReporter.
 
 
-![1.2](/pictures/picture-4.png?raw=true)
+![1.2](/res/pictures/picture-4.png?raw=true)
 
 -----------------------------------------------------------------------
 Building an executable from sources
