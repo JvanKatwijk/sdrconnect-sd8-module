@@ -6,6 +6,15 @@
 ![1.1](/res/pictures/front-picture.png?raw=true)
 
 --------------------------------------------------------------------------
+Important:
+The FT8 Module (as other modules) use the **WEBSOCKET** interface to
+the SDRconnect system.
+Be sure that the selector to enable the WebSocket Server in SDRconnect
+is enabled, it is probably nit enabled by default.
+
+![1.1](/res/pictures/preferences.png?raw=true)
+
+--------------------------------------------------------------------------
 About ft8-module
 -------------------------------------------------------------------------
 
