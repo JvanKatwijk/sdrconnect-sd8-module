@@ -22,7 +22,7 @@
  */
 #include	"bandplan.h"
 
-	bandPlan::bandPlan (const QString fileName) {
+	bandPlan::bandPlan (const QString &fileName) {
 	labelTable. resize (0);
 	loadPlan (fileName);
 }

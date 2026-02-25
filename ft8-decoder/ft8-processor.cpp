@@ -82,16 +82,19 @@ void	ft8_processor::set_maxIterations	(int n) {
 	maxIterations. store (n);
 }
 
+static
 void	insertString (char *target, int pos, const QString &s) {
 	for (int i = 0; s.toLatin1 (). data () [i] != 0; i ++)
 	   target [pos + i] = s. toLatin1 (). data () [i];
 }
 
+static
 void	insertNumber (char *target, int pos, int number) {
 QString s = QString::number (number);
 	insertString (target, pos, s);
 }
 
+static
 void	insert_2_Number (char *target, int pos, int number) {
 QString s;
 	if ((number >= 100) || (number < 0)) {
@@ -109,6 +112,7 @@ QString s;
 	insertString (target, pos, s);
 }
 
+static
 QString	makeLine (QString time,
 	          int value, int freq,
 	          QString message, int strength)  {

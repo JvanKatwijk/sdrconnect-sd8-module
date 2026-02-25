@@ -35,7 +35,7 @@
 #include	<vector>
 #include	<complex>
 #include	<mutex>
-
+#include	"constants.h"
 #include	"ringbuffer.h"
 //
 //	Lowest level, connecting reading and writing raw data

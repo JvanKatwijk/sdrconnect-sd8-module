@@ -25,6 +25,7 @@
 
 #include	<string>
 #include	<vector>
+
 typedef struct {
 	float	strength;
 	float	frequency;

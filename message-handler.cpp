@@ -23,6 +23,7 @@
 
 #include	<QJsonDocument>
 #include	<QJsonObject>
+#include	"ft8-constants.h"
 #include	"message-handler.h"
 #include	"downconverter.h"
 
@@ -89,10 +90,13 @@ QString message	= "{ \"event_type\":\"set_property\",\"property\":\"filter_bandw
 }
 
 void	messageHandler::binDataAvailable () {
-	std::complex<int16_t> inBuffer [outputRate / 50];
-	while (_I_Buffer. GetRingBufferReadAvailable () >= outputRate / 50) {
+	std::complex<int16_t>  *inBuffer = dynVec (std::complex<int16_t>,
+	                                            outputRate / 50);
+	while (_I_Buffer. GetRingBufferReadAvailable () >=
+	                                 (uint32_t)outputRate / 50) {
 	   _I_Buffer. getDataFromBuffer (inBuffer, outputRate / 50);
-	   std::complex<float> outBuffer [outputRate / 50];
+	   std::complex<float> *outBuffer = dynVec (std::complex<float>,
+	                                              outputRate / 50);
 	   for (int i = 0; i < outputRate / 50; i ++)
 	       outBuffer [i] = theFilter. Pass (real (inBuffer [i]) / 2048.0);
 	   _O_Buffer -> putDataIntoBuffer (outBuffer, outputRate / 50);

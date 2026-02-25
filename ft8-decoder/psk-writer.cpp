@@ -120,7 +120,7 @@ WSADATA wsaData;
 	memcpy (buffer, header, sizeof (header));
 	data_offset		= sizeof (header);
 	int receiver_start	= data_offset;
-	data_offset += copy_int2 (&buffer [data_offset], 0x9992);
+	data_offset	+= copy_int2 (&buffer [data_offset], 0x9992);
 	int sizeOffset	= data_offset;
 	data_offset += 2;	// to be filled in later
 	data_offset += copy_char (&buffer [data_offset], homeCall. c_str ());

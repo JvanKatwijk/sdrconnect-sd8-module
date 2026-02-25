@@ -73,10 +73,6 @@
 	
 	connect (this, &ft8_Decoder::show_pskStatus,
 	         mr, &RadioInterface::show_pskStatus);
-//	connect (this, &ft8_Decoder::printLine_2,
-//	         mr, &RadioInterface::printLine);
-//	connect (this, &ft8_Decoder::addMessage_2,
-//	         mr, &RadioInterface::addMessage);
 	connect (this, &ft8_Decoder::sendMessages,
 	         mr, &RadioInterface::sendMessages);
 	show_pskStatus (false);
@@ -88,10 +84,6 @@
 	   delete [] theBuffer [i];
 	delete [] window;
 	delete [] fftVector;
-//	ft8Settings	-> beginGroup ("ft8Settings");
-//	ft8Settings	-> setValue ("maxIterations", maxIterations. load ());
-//	ft8Settings	-> setValue ("width", spectrumWidth. load ());
-//	ft8Settings	-> endGroup ();
 }
 
 void	ft8_Decoder::processBuffer	(std::complex<float> *buffer,

@@ -24,8 +24,9 @@
 #pragma once
 
 #include	<stdint.h>
+#include	"constants.h"
 #include	<samplerate.h>
-#include	"radio-constants.h"
+#include	"constants.h"
 #include	"ringbuffer.h"
 
 class	fftFilter;
@@ -36,9 +37,9 @@ public:
 			~downConverter	();
 	int32_t		bufferSize_in	();
 	int32_t		bufferSize_out	();
-	void		convert_in	(std::complex<float> *);
+	void		convert_in	(Complex *);
 	uint32_t	hasData		();
-	int32_t		dataOut		(std::complex<float> *, int32_t);
+	int32_t		dataOut		(Complex *, int32_t);
 private:
 	int32_t         inRate;
 	int32_t         outRate;
@@ -51,7 +52,7 @@ private:
 	float           *outBuffer;
 	int32_t         inp;
 	fftFilter	*hfFilter;
-	RingBuffer<std::complex<float>> *dataBuffer;
+	RingBuffer<Complex> *dataBuffer;
 	bool		filtering_needed;
 };
 

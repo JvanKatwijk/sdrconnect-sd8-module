@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include	"radio-constants.h"
+#include	"constants.h"
 #include	<vector>
 
 class	HilbertFilter;
@@ -32,12 +32,12 @@ class	basicFIR {
 public:
 		basicFIR	(int16_t);
 		~basicFIR	();
-std::complex<float>	Pass	(std::complex<float>);
+Complex		Pass		(Complex);
 float		Pass		(float);
 void		setTaps		(int16_t len,
 	                         float *itaps, float *qtaps);
-	std::vector<std::complex<float>> filterKernel;
-	std::vector<std::complex<float>> Buffer;
+	std::vector<Complex> filterKernel;
+	std::vector<Complex> Buffer;
 	int	filterSize;
 	int	ip;
 	int	sampleRate;
@@ -49,8 +49,8 @@ public:
 	                            int32_t, 	// cutoff frequency
 	                            int32_t	// samplerate
 	                           );
-			~lowpassFIR (void);
-	std::complex<float>	*getKernel	(void);
+			~lowpassFIR	();
+	Complex		*getKernel	();
 	void		newKernel	(int32_t);	// cutoff
 };
 //
@@ -60,10 +60,10 @@ public:
 		         decimatingFIR	(int16_t, int32_t, int32_t, int16_t);
 	                 decimatingFIR	(int16_t, int32_t, int32_t,
 	                                                   int32_t, int16_t);
-			~decimatingFIR	(void);
+			~decimatingFIR	();
 	void		newKernel	(int32_t);
 	void		newKernel	(int32_t, int32_t);
-	bool		Pass	(std::complex<float>, std::complex<float> *);
+	bool		Pass		(Complex, Complex *);
 	bool		Pass	(float, float *);
 private:
 	int16_t	decimationFactor;
@@ -73,15 +73,15 @@ private:
 class	highpassFIR: public basicFIR {
 public:
 			highpassFIR	(int16_t, int32_t, int32_t);
-			~highpassFIR	(void);
+			~highpassFIR	();
 	void		newKernel	(int32_t);
 };
 
 class	bandpassFIR: public basicFIR {
 public:
 			bandpassFIR	(int16_t, int32_t, int32_t, int32_t);
-			~bandpassFIR	(void);
-	std::complex<float>	*getKernel	(void);
+			~bandpassFIR	();
+	Complex		*getKernel	();
 	void		newKernel	(int32_t, int32_t);
 private:
 };
@@ -89,31 +89,17 @@ private:
 class	basicbandPass: public basicFIR {
 public:
 			basicbandPass	(int16_t, int32_t, int32_t, int32_t);
-			~basicbandPass	(void);
-	std::complex<float>	*getKernel	(void);
+			~basicbandPass	();
+	Complex	*getKernel		();
 private:
 };
 
-class	adaptiveFilter {
-public:
-		adaptiveFilter	(int16_t, float);
-		~adaptiveFilter	();
-	std::complex<float>	Pass		(std::complex<float>);
-
-private:
-	int16_t		ip;
-	float		err;
-	float		mu;
-	int16_t		firsize;
-	float		*Kernel;
-	std::complex<float>	*Buffer;
-};
 
 class HilbertFilter {
 public:
 		HilbertFilter	(int16_t, float, int32_t);
 		~HilbertFilter	();
-	std::complex<float>	Pass		(std::complex<float>);
+	std::complex<float>	Pass		(Complex);
 	std::complex<float>	Pass		(float, float);
 private:
 	int16_t		ip;
@@ -121,7 +107,7 @@ private:
 	int32_t		rate;
 	float		*cosKernel;
 	float		*sinKernel;
-	std::complex<float>	*Buffer;
+	Complex		*Buffer;
 	void		adjustFilter	(float);
 };
 

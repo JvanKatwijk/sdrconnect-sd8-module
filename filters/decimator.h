@@ -25,7 +25,7 @@
 
 #include	<stdint.h>
 #include	<samplerate.h>
-#include	"radio-constants.h"
+#include	"constants.h"
 
 class	decimator {
 public:

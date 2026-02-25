@@ -42,6 +42,7 @@
 
 #define browserAddress  "https://pskreporter.info/pskmap.html"
 
+static
 QString	FrequencytoString (int32_t freq) {
 	if (freq < 10)
 	   return QString (QChar ('0' + (uint8_t)(freq % 10)));
@@ -65,7 +66,7 @@ uint32_t freqTable [] =
 	                                    thePresets (this, presetFile),
 	                                    theDecimator (48000, 12000) {
 	this	-> settings	= sI;
-	this	-> inputRate	= 96000;
+	this	-> inputRate	= 48000;
 	setupUi (this);
 
 	running. store (false);
@@ -83,10 +84,8 @@ uint32_t freqTable [] =
 	displayArea	-> setWidget (tableWidget);
 //      and some buffers
 
-	centerFrequency		= KHz (14070);
 	selectedFrequency	= KHz (14070);
 	
-
 //	settings
 	settings	-> beginGroup ("ft8Settings");
 	int val		= settings -> value ("width", 4000). toInt ();
@@ -102,8 +101,12 @@ uint32_t freqTable [] =
 	QString homeCall        =
                  settings       -> value ("homeCall", "your call"). toString ();
         homecall_label          -> setText (homeCall);
-	
+
+	this	-> setWindowTitle (QString ("FT8 module for SDRconnect (") + GITHASH + ")");
+	copyright_label		-> setToolTip (QString ("build ") + GITHASH);
 	settings	-> endGroup ();
+	connect (presetButton, &QPushButton::clicked,
+	         this, &RadioInterface::handle_presetButton);
         connect (freqButton, &QPushButton::clicked,
                  this, &RadioInterface::handle_freqButton);
 	connect (freqSave, &QPushButton::clicked,
@@ -116,8 +119,6 @@ uint32_t freqTable [] =
                  this, &RadioInterface::set_spectrumWidth);
 	connect (iterationSelector, &QSpinBox::valueChanged,
                  this, &RadioInterface::set_maxIterations);
-	connect (presetButton, &QPushButton::clicked,
-	         this, &RadioInterface::handle_presetButton);
 	connect	(pskReporterButton, &QPushButton::clicked,
 	         this, &RadioInterface::handle_pskReporterButton);
 	connect (filesaveButton, &QPushButton::clicked,
@@ -135,8 +136,13 @@ uint32_t freqTable [] =
 	theDecoder	= new ft8_Decoder (this, 12000, settings);
 	inputHandler	= nullptr;
 
+	
+	settings	-> beginGroup ("ft8Settings");
+	QString serverAddress
+	       = settings -> value ("serverAddress", "127.0.0.1"). toString ();
+	settings	-> endGroup ();
 	hostNameLabel	-> setInputMask ("000.000.000.000");
-	hostNameLabel	-> setText ("127.0.0.1");
+	hostNameLabel	-> setText (serverAddress);
 	connect (hostNameLabel, &QLineEdit::returnPressed,
 	         this, &RadioInterface::handle_hostName);
 	disableButtons	();
@@ -144,6 +150,7 @@ uint32_t freqTable [] =
 
 //      The end of all
         RadioInterface::~RadioInterface () {
+	handle_quitButton ();
 }
 //
 //	handle hostname is called whenever the user acknowledges the
@@ -153,9 +160,13 @@ QString	hostName	= hostNameLabel -> text ();
 int	portNumber	= portLabel	-> value ();
 	if (inputHandler != nullptr)
 	   return;
+
 	inputHandler	= new messageHandler (hostName, portNumber,
 	                                              48000, 10136000,
 	                                              &inputData);
+	settings	-> beginGroup ("ft8Settings");
+	settings	-> setValue ("serverAddress", hostName);
+	settings	-> endGroup ();
 	fprintf (stderr, "we have an input handler\n");
 	connect (inputHandler, &messageHandler::connection_success,
 	         this, &RadioInterface::handle_connect);
@@ -219,6 +230,7 @@ void	RadioInterface::handle_quitButton	() {
 	   delete inputHandler;
 	delete		theDecoder;
 	secondsTimer. stop ();
+	mykeyPad	-> hidePad ();
         delete		mykeyPad;
 	if (filePointer. load () != nullptr)
 	   fclose (filePointer. load ());
@@ -237,13 +249,12 @@ void    RadioInterface::handle_freqButton () {
 //	from inside to change VFO and offset,
 //	and from the decoder
 void	RadioInterface::setFrequency (int32_t frequency) {
-	centerFrequency		= frequency;
 	selectedFrequency	= frequency;
 	settings        -> beginGroup ("ft8Settings");
         settings	-> setValue ("freq", frequency / KHz (1));
 	settings	-> endGroup ();
 	settings	-> sync ();
-	inputHandler -> setFrequency (centerFrequency);
+	inputHandler -> setFrequency (selectedFrequency);
 	displayFrequency	(selectedFrequency);
 }
 
@@ -264,9 +275,6 @@ int32_t	RadioInterface::get_selectedFrequency	() {
 	return selectedFrequency;
 }
 
-int32_t	RadioInterface::get_centerFrequency	() {
-	return centerFrequency;
-}
 //
 void    RadioInterface::set_freqSave    () {
 	int frequency	= inputHandler ->  getFrequency ();
@@ -276,8 +284,10 @@ void    RadioInterface::set_freqSave    () {
 //////////////////////////////////////////////////////////////////
 //
 void	RadioInterface::sampleHandler (int amount) {
-std::complex<float>   buffer [theDecimator. inSize ()]; 
-std::complex<float> ifBuffer [theDecimator. outSize ()];
+std::complex<float> *buffer = dynVec (std::complex<float>, 
+                                            theDecimator. inSize ()); 
+std::complex<float> *ifBuffer = dynVec (std::complex<float>,
+	                                    theDecimator. outSize ());
 	(void)amount;
 	while (inputData. GetRingBufferReadAvailable () > 512) {
 	   inputData. getDataFromBuffer (buffer, 512);
@@ -313,7 +323,7 @@ void RadioInterface::closeEvent (QCloseEvent *event) {
         if (resultButton != QMessageBox::Yes) {
            event -> ignore();
         } else {
-           handle_quitButton ();
+//	   handle_quitButton ();
            event -> accept ();
 //	   exit (1);
         }

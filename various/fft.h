@@ -25,7 +25,7 @@
 
 //
 //	Simple wrapper around fftw
-#include	"radio-constants.h"
+#include	"constants.h"
 #include	<complex>
 #include	<stdint.h>
 //
@@ -44,22 +44,22 @@ class	fft_handler {
 public:
 			fft_handler	(int32_t);
 			~fft_handler	();
-	void		do_FFT		(std::complex<float> *);
+	void		do_FFT		(Complex *);
 private:
 	int32_t		fftSize;
 	FFTW_PLAN	plan;
-	std::complex<float>	*vector;
+	Complex		*vector;
 };
 
 class	ifft_handler {
 public:
 			ifft_handler	(int32_t);
 			~ifft_handler	();
-	void		do_IFFT		(std::complex<float> *);
+	void		do_IFFT		(Complex *);
 private:
 	int		fftSize;
 	FFTW_PLAN	plan;
-	std::complex<float>	*vector;
-	void		Scale		(std::complex<float> *);
+	Complex	*vector;
+	void		Scale		(Complex *);
 };
 	

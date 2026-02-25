@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=ft8-module
-Exec=ft8-module
-Icon=ft8-module
-Type=Application
-Categories=AudioVideo;
-Comment=A ft8 decoder using Qt and C++
-

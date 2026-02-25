@@ -21,10 +21,8 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include	"ft8-constants.h"
 #include	"fir-filters.h"
-#ifndef	__MINGW32__
-#include	"alloca.h"
-#endif
 
 		basicFIR::basicFIR (int16_t size):
 	                                   filterKernel (size),
@@ -102,7 +100,7 @@ int16_t	i;
 
 void	lowpassFIR::newKernel (int32_t Fc) {
 int16_t	i;
-float	tmp [filterSize];
+float	*tmp	= dynVec (float, filterSize);
 float	f	= (float)Fc / sampleRate;
 float	sum	= 0.0;
 
@@ -142,7 +140,7 @@ std::complex<float>	*lowpassFIR::getKernel (void) {
 
 void	highpassFIR::newKernel (int32_t Fc) {
 int16_t	i;
-float 	tmp [filterSize];
+float 	*tmp	= dynVec (float, filterSize);
 float f	= (float)Fc / sampleRate;
 float sum	= 0.0;
 
@@ -197,8 +195,8 @@ float	*bandpassKernel (float *v, int16_t fsize, float Fcl, float Fch) {
 float	sumA	= 0.0;
 float	sumB	= 0.0;
 int16_t	i;
-float	tmp1 [fsize];
-float	tmp2 [fsize];
+float	*tmp1	= dynVec (float, fsize);
+float	*tmp2	= dynVec (float, fsize);
 
 	if ((Fcl > 0.5) || (Fch <= Fcl) || (Fch > 0.5)) {
             fprintf (stderr, "bandpasskernel ??? (%f, %f) %d\n",
@@ -223,7 +221,7 @@ float	tmp2 [fsize];
 	                              int32_t low, int32_t high,
 	                              int32_t rate):
 	                                      basicFIR (firsize) {
-float	t1 [firsize];
+float	*t1	= dynVec (float, firsize);
 int16_t		i;
 
 	sampleRate	= rate;
@@ -257,7 +255,7 @@ std::complex<float>	*basicbandPass::getKernel () {
 //	For the kernel we compute the size of the "equivalent"
 //	low pass filter (lo), and the amount of the shift
 void	bandpassFIR::newKernel (int32_t low, int32_t high) {
-float	tmp [filterSize];
+float	*tmp	= dynVec (float, filterSize);
 float	lo	= (float)((high - low) / 2) / sampleRate;
 float	shift	= (float) ((high + low) / 2) / sampleRate;
 float	sum	= 0.0;
@@ -291,87 +289,6 @@ std::complex<float>	*bandpassFIR::getKernel () {
 	return filterKernel. data ();
 }
 
-//=====================================================================
-/*
- *	adaptive (noise reduction) filter a la
- *	doug smith (Signal, Samples and stuff 3, qex 
- *	july 1998.
- *	basic: h(k+ 1) = lambda h(k) + 2 * u * err * x (k)
- *	it really works
- */
-	adaptiveFilter::adaptiveFilter (int16_t fsize, float mu) {
-int16_t	i;
-	if (fsize < 2)
-	   fsize = 2;
-	else
-	if (fsize > 20)
-	   fsize = 20;
-	firsize		= fsize;
-	Kernel		= new float [fsize];
-	Buffer		= new std::complex<float> [fsize];
-// 	we start with a small mu
-	this	-> mu = 0.20;
-	if (mu > 0 && mu < 1)
-	   this -> mu = mu;
-	ip		= 0;
-//
-//	we start with  kernel such that error determination
-//	results in a (small) error for the first token
-	Kernel [0] 	= 0.95; Buffer [0]	= 0;
-	Kernel [1]	= 0.05; Buffer [1]	= 0;
-
-	for (i = 2; i < firsize; i ++) {
-	   Kernel [i]	= 0;
-	   Buffer [i]	= 0;
-	}
-	err	= 0.5;
-}
-
-	adaptiveFilter::~adaptiveFilter () {
-	delete[]	Kernel;
-	delete[]	Buffer;
-}
-
-// 	Passing here is more complex since we 
-// 	adapt the filtercoeeficients at the same time
-std::complex<float> adaptiveFilter::Pass (std::complex<float> z) {
-std::complex<float>	tmp = 0;
-int16_t		i;
-float	sum	= 0.0;
-std::complex<float>	refSymbol	= Buffer [ip];
-/*
- *	first filter with delayed elements
- *	Buffer is used in a circular way, with insertion and reading
- *	differing by firsize
- */
-	Buffer [ip] = z;
-
-	for (i = 0; i < firsize; i ++) {
-	   int16_t index = (ip - i);
-	   if (index < 0)
-	      index += firsize;
-	   tmp += cmul (Buffer [index], Kernel [i]);
-	}
-
-	ip = (ip + 1);
-	if (ip >= firsize)
-	   ip = 0;
-//
-//	determine the error
-	err = abs (refSymbol) - abs (tmp);
-//	err = (real (z) - real (tmp)) + (imag (z) - imag (tmp));
-/*
- *	... and adapt the kernel elements accordingly
- */
-	for (i = 0; i < firsize; i ++) {
-	   Kernel [i] = 0.99 * Kernel [i] + 2.0 * mu * err * real (z);
-	   sum += Kernel [i];
-	}
-
-	for (i = 0; i < firsize; i ++) 
-	   Kernel [i] /= sum;
-	return tmp;
-}
 //
 //====================================================================
 //

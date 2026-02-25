@@ -10,9 +10,9 @@ Important:
 The FT8 Module (as other modules) use the **WEBSOCKET** interface to
 the SDRconnect system.
 Be sure that the selector to enable the WebSocket Server in SDRconnect
-is enabled, it is probably nit enabled by default.
+is enabled, it is probably not enabled by default.
 
-![1.1](/res/pictures/preferences.png?raw=true)
+![1.2](/res/pictures/preferences.png?raw=true)
 
 --------------------------------------------------------------------------
 About ft8-module
@@ -44,7 +44,7 @@ The program shows a GUI which is divded into two parts,
  * the left hand side contains the controls,
  * the right hand side shows decoded messages.
 
-![1.1](/res/pictures/picture-1.png?raw=true)
+![1.3](/res/pictures/picture-1.png?raw=true)
 
 of course, on program startup a connection must be made with an SDRconnect
 server. As can be seen on the picture above,n IP address can be
@@ -53,7 +53,7 @@ specified in a small widget on top of the right half of the GUI.
 The spinbox on the right is prefilled with the number 5454 which is the
 default port number where the SDRconnect server is listening.
 
-![1.2](/res/pictures/picture-2.png?raw=true)
+![1.4](/res/pictures/picture-2.png?raw=true)
 
 FT8 is transmitted on specified frequencies, therefore ft8-module 
 has a preset list.
@@ -61,7 +61,7 @@ Touching the button labeled **presets* shows the list,
 touching a frequency on the list
 instructs the software to switch over to the frequency specified.
 
-![1.3](/res/pictures/picture-3.png?raw=true)
+![1.5](/res/pictures/picture-3.png?raw=true)
 
 A **select freq** button is just below the button for the preset list.
 Touching that button shows a small window where a frequency can be
@@ -116,7 +116,7 @@ will result in
  * sending each received message to the pskReporter.
 
 
-![1.2](/res/pictures/picture-4.png?raw=true)
+![1.6](/res/pictures/picture-4.png?raw=true)
 
 -----------------------------------------------------------------------
 Building an executable from sources
@@ -136,7 +136,11 @@ The directory contains a file "qt-ft8.pro" that can be used to
 generate a Makefile. In order to do so, Qt6 and **qmake6** need to be
 installed.
 
-The AppImage is built on Ubuntu 22, the required libraries and programs can be installed as given below (assuming the default Qt version is used)
+The AppImage is built on Ubuntu 22 with Qt 6.8.3 which is NOT the default
+Qt version on Ubuntu 22. An executable and an AppImage **can** be made
+using the default installed Qt version on U22.
+
+The required libraries and programs can be installed as given below (assuming the default Qt version is used)
 
  *   sudo apt-get update
  *   sudo apt-get install git

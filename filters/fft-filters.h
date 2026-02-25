@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include	"radio-constants.h"
+#include	"constants.h"
 #include	"fir-filters.h"
 #include	"fft.h"
 
@@ -33,7 +33,7 @@ public:
 			~fftFilter	(void);
 	void		setBand		(int32_t, int32_t, int32_t);
 	void		setLowPass	(int32_t, int32_t);
-	std::complex<float>	Pass		(std::complex<float>);
+	Complex		Pass		(Complex);
 	float		Pass		(float);
 
 private:
@@ -42,13 +42,13 @@ private:
 	int16_t		OverlapSize;
 	int16_t		NumofSamples;
 	fft_handler	*MyFFT;
-	std::complex<float>	*FFT_A;
+	Complex		*FFT_A;
 	ifft_handler	*MyIFFT;
-	std::complex<float>	*FFT_C;
+	Complex		*FFT_C;
 	fft_handler	*FilterFFT;
-	std::complex<float>	*filterVector;
+	Complex		*filterVector;
 	float		*RfilterVector;
-	std::complex<float>	*Overloop;
+	Complex		*Overloop;
 	int32_t		inp;
 	float		*blackman;
 };

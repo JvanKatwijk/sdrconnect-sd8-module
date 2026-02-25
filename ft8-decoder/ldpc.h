@@ -4,21 +4,21 @@
  *    Karlis Goba
  *    YL33G
  *
- *    This file is the :.h" file for the class made for the ldpc
- *    functions imported from the ft8 linrary from Karlis Goba
+ *    This file is the ".h" file for the class made for the ldpc
+ *    functions imported from the ft8 library from Karlis Goba
  *
- *    qt-ft8 decoder is free software; you can redistribute it and/or modify
+ *    ft8 module is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation; either version 2 of the License, or
  *    (at your option) any later version.
  *
- *    qt-ft8 decoder is distributed in the hope that it will be useful,
+ *    ft8 module is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with qt-ft8 decoder; if not, write to the Free Software
+ *    along with ft8 module; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -32,9 +32,9 @@ public:
 		ldpc	();
 		~ldpc	();
 		
-	void	ldpc_decode (float codeword[], int max_iters,
+	void	ldpc_decode	(float codeword[], int max_iters,
 	                                    uint8_t plain[], int* ok);
-	void	bp_decode (float codeword[], int max_iters,
+	void	bp_decode	(float codeword[], int max_iters,
 	                                    uint8_t plain[], int* ok);
 private:
 

@@ -25,6 +25,7 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include	"constants.h"
 #include	"pack-handler.h"
 #include	<stdio.h>
 
@@ -569,7 +570,7 @@ QString res;
 }
 
 QString	packHandler::get_CQcode (uint32_t data, int size) {
-char cq [size + 1];
+char *cq  = dynVec (char, size + 1);
 
 	cq [size] = 0;
 	for (int i = 0; i < size; i ++) {
@@ -616,6 +617,7 @@ QStringList result;
 	return result;	// cannot happen
 }
 
+static
 bool	test_cq (uint32_t k) {
 	if (k == 2)
 	   return true;

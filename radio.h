@@ -25,25 +25,22 @@
 
 #include        <QMainWindow>
 #include        <QTimer>
-#include        <QWheelEvent>
 #include        <QLineEdit>
+#include	<QTableWidget>
 #include	<QTimer>
+#include        <QStandardItemModel>
 #include        "ui_ft8-module.h"
-#include        "radio-constants.h"
+#include        "constants.h"
 #include	"fft-filters.h"
 #include        "ringbuffer.h"
 #include	"decimator.h"
 #include	"bandplan.h"
-#include        <QStandardItemModel>
 #include	<mutex>
 #include	"preset-handler.h"
-#include	<QTableWidget>
 
 #include	"message-handler.h"
 class		ft8_Decoder;
 class           QSettings;
-class           fftScope;
-class           fft_scope;
 class           keyPad;
 class		reporterWriter;
 
@@ -57,7 +54,6 @@ public:
 		~RadioInterface	();
 
 	int32_t		get_selectedFrequency	();
-	int32_t		get_centerFrequency	();
 private:
         RingBuffer<std::complex<float> > inputData;
 
@@ -75,7 +71,6 @@ private:
 	decimator	theDecimator;
 	QTimer		secondsTimer;
 
-	int32_t		centerFrequency;
 	int32_t		selectedFrequency;
 	QSettings       *settings;
         int32_t         inputRate;

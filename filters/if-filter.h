@@ -32,7 +32,7 @@ public:
 		ifFilter	(int32_t rate, int32_t width);
 		~ifFilter	();
 	void	setMiddle	(int32_t);
-	void	Pass		(DSPCOMPLEX *, int32_t);
+	void	Pass		(Complex *, int32_t);
 private:
 	fftFilter	*theFilter;
 	int32_t		theRate;

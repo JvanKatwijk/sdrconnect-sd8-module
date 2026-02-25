@@ -25,9 +25,11 @@
 #include	<QString>
 #include	<complex>
 #include	<atomic>
+#include	"constants.h"
 #include	"ringbuffer.h"
 #include	"socket-handler.h"
 #include	"hilbertfilter.h"
+
 class		downConverter;
 
 class messageHandler: public socketHandler {

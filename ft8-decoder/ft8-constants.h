@@ -4,7 +4,7 @@
  *    Jan van Katwijk (J.vanKatwijk@gmail.com)
  *    Lazy Chair Computing
  *
- *    This file is part of the ft8 module
+ *    This file is part of the ft8 module for SDRconnect
  *
  *    ft8 module is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -36,6 +36,5 @@
 #define FTX_LDPC_M       (83)    ///< Number of LDPC checksum bits (FTX_LDPC_N - FTX_LDPC_K)
 #define FTX_LDPC_N_BYTES ((FTX_LDPC_N + 7) / 8) ///< Number of whole bytes needed to store 174 bits (full message)
 #define FTX_LDPC_K_BYTES ((FTX_LDPC_K + 7) / 8) ///< Number of whole bytes needed to store 91 bits (payload + CRC only)
-
 
 

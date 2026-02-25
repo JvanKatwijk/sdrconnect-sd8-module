@@ -27,8 +27,9 @@
 #include	<QDir>
 #include	<unistd.h>
 #include	"radio.h"
-#include	"radio-constants.h"
+#include	"constants.h"
 
+static
 QString fullPathfor (QString v, QString type) {
 QString fileName;
 

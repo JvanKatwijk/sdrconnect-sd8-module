@@ -24,8 +24,8 @@
 #pragma once
 #include	<stdio.h>
 #include	<fftw3.h>
-#include        <complex>
 #include        <cstring>
+#include	"constants.h"
 
 using namespace std;
 
@@ -34,11 +34,11 @@ class	hilbertFilter {
 public:
 		hilbertFilter	(int size);
 		~hilbertFilter	();
-std::complex<float> Pass	(float);
+Complex		Pass		(float);
 
 private:
-	std::complex<float>	*fftBuffer_1;
-	std::complex<float>	*fftBuffer_2;
+	Complex	*fftBuffer_1;
+	Complex	*fftBuffer_2;
 	fftwf_plan		plan_in;
         fftwf_plan		plan_uit;
 	int			size;

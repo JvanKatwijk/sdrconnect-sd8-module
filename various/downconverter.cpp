@@ -20,6 +20,7 @@
  *    along with qt-ft8 decoder; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include	"ft8-constants.h"
 #include	"downconverter.h"
 #include	"fft-filters.h"
 
@@ -94,7 +95,8 @@ int32_t	i;
 	      (void)res;
 	      inp       = 0;
 	      int framesOut       = src_data -> output_frames_gen;
-	      std::complex<float> b2 [framesOut];
+	      std::complex<float> *b2  = dynVec (std::complex<float>,
+	                                              framesOut);
 	      for (int j = 0; j < framesOut; j ++)
 	         b2 [j] = std::complex<float> (outBuffer [2 * j] * 10,
 	                                       outBuffer [2 * j + 1]* 10);

@@ -22,7 +22,7 @@
  */
 
 #pragma once
-#include	"radio-constants.h"
+#include	"constants.h"
 #include	"fft.h"
 
 #define	S_CHEBYSHEV	0100
@@ -48,28 +48,28 @@ public:
 	int16_t		numofQuads;
 	element		*Quads;
 	float		gain;
-	DSPCOMPLEX		*m1;
-	DSPCOMPLEX		*m2;
+	Complex		*m1;
+	Complex		*m2;
 			Basic_IIR	(int16_t n) {
 	int16_t i;
 		numofQuads	= n;
 	        
 		Quads		= new element		[2 * numofQuads];
-		m1		= new DSPCOMPLEX	[2 * numofQuads];
-		m2		= new DSPCOMPLEX	[2 * numofQuads];
+		m1		= new Complex		[2 * numofQuads];
+		m2		= new Complex		[2 * numofQuads];
 		for (i = 0; i < numofQuads; i ++) {
 	           m1 [i]	= 0;
 	           m2 [i]	= 0;
 	        }
 	}
-			~Basic_IIR	(void) {
+			~Basic_IIR	() {
 		delete[]	Quads;
 		delete[]	m1;
 		delete[]	m2;
 	}
 
-	DSPCOMPLEX	Pass		(DSPCOMPLEX z) {
-	DSPCOMPLEX	o, w;
+	Complex	Pass		(Complex z) {
+	Complex	o, w;
 	int16_t	i;
 
 		o = cmul (z, gain);

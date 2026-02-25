@@ -21,10 +21,11 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 //
-#include	"preset-handler.h"
-#include	"radio.h"
 #include	<QDomDocument>
 #include	<QFile>
+#include	"ft8-constants.h"
+#include	"preset-handler.h"
+#include	"radio.h"
 
 static
 
@@ -94,15 +95,19 @@ QDomElement root = theScanList. createElement ("preset_db");
 	file. close ();
 }
 
+static
 QStringList	sortList (QStringList &list) {
-int inpval [list. size ()] = {0};
+int 	*inpval  = dynVec (int, list. size ());
 QStringList outList;
 bool ok;
 	for (int i = 0; i < list. size (); i ++) {
 	   int val = list. at (i). toInt (&ok);
 	   if (ok)
 	      inpval [i] = val;
+	   else
+	      inpval [i] = 0;
 	}
+
 	std::sort (inpval, inpval + list. size ());
 	for (int i = 0; i < list. size (); i ++)
 	   outList << QString::number (inpval [i]);

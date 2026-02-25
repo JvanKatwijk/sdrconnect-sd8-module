@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include	"radio-constants.h"
 #include	<QObject>
 #include	<QFrame>
 #include	<QSettings>
@@ -31,10 +30,10 @@
 #include        <QStandardItemModel>
 #include	<atomic>
 #include	<mutex>
+#include	"constants.h"
 #include	"ft8-constants.h"
 #include	"ldpc.h"
 #include	"ft8-processor.h"
-//#include	"psk-writer.h"
 #include	"fft.h"
 
 typedef struct {

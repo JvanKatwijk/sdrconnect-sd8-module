@@ -21,6 +21,7 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include	"ft8-constants.h"
 #include	"fft-filters.h"
 #include	<cstring>
 
@@ -72,7 +73,7 @@ int32_t	i;
 //
 //	set the band to a new value, i.e. create a new kernel
 void	fftFilter::setBand (int32_t low, int32_t high, int32_t rate) {
-float	tmp [filterDegree];
+float	*tmp	= dynVec (float, filterDegree);
 float	lo	= (float)((high - low) / 2) / rate;
 float	shift	= (float) ((high + low) / 2) / rate;
 float	sum	= 0.0;

@@ -35,7 +35,7 @@ INCLUDEPATH += .  \
 #CONFIG += static
 
 # Input
-HEADERS += ./radio-constants.h \
+HEADERS += ./constants.h \
 	   ./radio.h \
 	   ./socket-handler.h \
 	   ./message-handler.h \
@@ -50,6 +50,7 @@ HEADERS += ./radio-constants.h \
 	   ./filters/decimating_filter.h \
 	   ./filters/hilbertfilter.h \
 	   ./filters/decimator.h \
+	   ./ft8-decoder/ft8-constants.h \
            ./ft8-decoder/ft8-decoder.h \
            ./ft8-decoder/ft8-processor.h \
            ./ft8-decoder/pack-handler.h \
@@ -73,7 +74,7 @@ SOURCES += ./main.cpp \
 	   ./various/preset-handler.cpp \
            ./filters/fft-filters.cpp \
            ./filters/fir-filters.cpp \
-           ./filters/iir-filters.cpp \
+#	   ./filters/iir-filters.cpp \
 	   ./filters/decimating_filter.cpp \
 	   ./filters/hilbertfilter.cpp \
 	   ./filters/decimator.cpp \
@@ -96,6 +97,8 @@ exists ("./.git") {
 isEmpty(GITHASHSTRING) {
     DEFINES += GITHASH=\\\"------\\\"
 }
+
+QMAKE_CXXFLAGS += -pedantic -Wextra -Wcast-align  -Winit-self -Wlogical-op -Wmissing-declarations  -Woverloaded-virtual -Wredundant-decls   -Wstrict-null-sentinel  -Wundef  -Wno-unused
 
 TARGET		= ft8-module
 DESTDIR		= ./linux-bin
