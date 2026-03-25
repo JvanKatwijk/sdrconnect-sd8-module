@@ -32,6 +32,17 @@ INCLUDEPATH += .  \
 	      various \
 	      ft8-decoder 
 
+macx {
+    exists(/opt/homebrew/include/fftw3.h) {
+        INCLUDEPATH += /opt/homebrew/include
+        LIBS += -L/opt/homebrew/lib
+    }
+    exists(/usr/local/include/fftw3.h) {
+        INCLUDEPATH += /usr/local/include
+        LIBS += -L/usr/local/lib
+    }
+}
+
 #CONFIG += static
 
 # Input
@@ -103,10 +114,15 @@ QMAKE_CXXFLAGS += -pedantic -Wextra -Wcast-align  -Winit-self -Wlogical-op -Wmis
 TARGET		= ft8-module
 DESTDIR		= ./linux-bin
 
-LIBS		+= -L/usr/lib64
-LIBS		+= -L/lib64
 INCLUDEPATH	+= /usr/include/qt6/qwt
-LIBS		+= -lrt -lsamplerate -lusb-1.0 -lfftw3f -ldl
+macx {
+    LIBS += -lsamplerate -lusb-1.0 -lfftw3f
+}
+else {
+    LIBS += -L/usr/lib64
+    LIBS += -L/lib64
+    LIBS += -lrt -lsamplerate -lusb-1.0 -lfftw3f -ldl
+}
 }
 
 win32 {
@@ -134,4 +150,3 @@ LIBS	+= -lwinpthread
 LIBS	+= -lstdc++
 LIBS	+= -lws2_32
 }
-
