@@ -227,13 +227,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="connectionLabel">
-          <property name="text">
-           <string>not connected</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLineEdit" name="hostNameLabel"/>
         </item>
         <item>
@@ -243,6 +236,13 @@
           </property>
           <property name="value">
            <number>5454</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="connectButton">
+          <property name="text">
+           <string> connect</string>
           </property>
          </widget>
         </item>

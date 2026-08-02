@@ -101,7 +101,7 @@ public	slots:
 	void		addMessage		(const QString &,
 	                                         const QString &,
 	                                         int, int);
-	void		handle_hostName		();
+	void		handle_connectButton	();
 	void		handle_disconnect	();
 	void		handle_connect		();
 	void		reset			();

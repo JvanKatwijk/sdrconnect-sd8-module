@@ -115,9 +115,11 @@ uint32_t freqTable [] =
                  this, &RadioInterface::handle_cq_selector);
 	connect (identityButton, &QPushButton::clicked,
 	         this, &RadioInterface::handle_identityButton);
-	connect (spectrumWidth_selector, &QSpinBox::valueChanged,
+	connect (spectrumWidth_selector,
+	                       qOverload<int>(&QSpinBox::valueChanged),
                  this, &RadioInterface::set_spectrumWidth);
-	connect (iterationSelector, &QSpinBox::valueChanged,
+	connect (iterationSelector,
+	                       qOverload<int>(&QSpinBox::valueChanged),
                  this, &RadioInterface::set_maxIterations);
 	connect	(pskReporterButton, &QPushButton::clicked,
 	         this, &RadioInterface::handle_pskReporterButton);
@@ -127,7 +129,7 @@ uint32_t freqTable [] =
 	         this, &RadioInterface::handle_timer);
 	connect	(scanButton, &QPushButton::clicked,
 	         this, &RadioInterface::handle_scanButton);
-	connect (periodSelector, &QSpinBox::valueChanged,
+	connect (periodSelector, qOverload<int>(&QSpinBox::valueChanged),
 	         this, &RadioInterface::handle_periodSelector);
 
 	periodSelector	-> hide ();
@@ -151,8 +153,8 @@ uint32_t freqTable [] =
 	settings	-> endGroup ();
 	hostNameLabel	-> setInputMask ("000.000.000.000");
 	hostNameLabel	-> setText (serverAddress);
-	connect (hostNameLabel, &QLineEdit::returnPressed,
-	         this, &RadioInterface::handle_hostName);
+	connect (connectButton, &QPushButton::clicked,
+	         this, &RadioInterface::handle_connectButton);
 	disableButtons	();
 }
 
@@ -163,7 +165,7 @@ uint32_t freqTable [] =
 //
 //	handle hostname is called whenever the user acknowledges the
 //	hostname, no guarantee tht there is a connection
-void	RadioInterface::handle_hostName		() {
+void	RadioInterface::handle_connectButton		() {
 QString	hostName	= hostNameLabel -> text ();
 int	portNumber	= portLabel	-> value ();
 	if (inputHandler != nullptr)
@@ -185,6 +187,8 @@ int	portNumber	= portLabel	-> value ();
 //	at this point, the underlying handler has set everything
 //	ready for processing
 void	RadioInterface::handle_connect	() {
+	disconnect (connectButton, &QPushButton::clicked,
+	            this, &RadioInterface::handle_connectButton);
 	disconnect (inputHandler, &messageHandler::connection_success,
 	            this, &RadioInterface::handle_connect);
 	connect (inputHandler, &messageHandler::dataAvailable,
@@ -195,7 +199,7 @@ void	RadioInterface::handle_connect	() {
 	         this, &RadioInterface::newSNR);
 	connect	(inputHandler, &messageHandler::connection_failed,
 	         this, &RadioInterface::reset);
-	connectionLabel	-> setText ("connected");
+	connectButton	-> setText ("connected");
 	settings        -> beginGroup ("ft8Settings");
         int val         = settings -> value ("freq", 10136). toInt ();
 	settings	-> endGroup	();
@@ -223,8 +227,8 @@ void	RadioInterface::reset	() {
 	inputHandler	= nullptr;
 	hostNameLabel	-> setInputMask ("000.000.000.000");
 	hostNameLabel	-> setText ("127.0.0.1");
-	connect (hostNameLabel, &QLineEdit::returnPressed,
-	         this, &RadioInterface::handle_hostName);
+	connect (connectButton, &QPushButton::clicked,
+	         this, &RadioInterface::handle_connectButton);
 	disableButtons	();
 	int	rows	= tableWidget -> rowCount ();
 	for (int i = rows - 1; i >= 1; i --)

@@ -12,7 +12,17 @@ the SDRconnect system.
 Be sure that the selector to enable the WebSocket Server in SDRconnect
 is enabled, it is probably not enabled by default.
 
+----------------------------------------------------------------------------
+Connecting
+----------------------------------------------------------------------------
+
+It was not obvious that connecting required acknowledging the address by a issuing a return on the address field. To make things more intuitive, I added a
+button labeled "connect", that when touched will start the connection procedure with the address and port number as specified.
+
+-----------------------------------------------------------------------
+
 ![1.2](/res/pictures/preferences.png?raw=true)
+
 
 --------------------------------------------------------------------------
 About ft8-module
@@ -136,7 +146,8 @@ it is of course possible to build an executable yourself.
 As said, ft8-module is built using C++ as implementation language
 with use of the excellent framework of Qt for GUI, websockets etc.
 
-So for building a executable one needs at least g++ and Qt6.
+So for building a executable one needs at least g++ and Qt5 or Qt6.
+.
 I have been using Qt6.2 (which is the supported version under Ubuntu 22)
 and 6.9 (which runs on my Fedora development platform.)
 
